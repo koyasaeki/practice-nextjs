@@ -12,7 +12,7 @@ const Home: NextPage = () => {
 
       <main className="h-screen">
         <div className="flex justify-center items-center h-full">
-          <h1 className="text-5xl">NextJS and Tailwind Example</h1>
+          <h1 className="text-5xl font-bold">NextJS and Tailwind Example</h1>
         </div>
       </main>
 
