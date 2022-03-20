@@ -1,24 +1,14 @@
 import type { NextPage } from "next";
-import Head from "next/head";
+import { useAuth0 } from "@auth0/auth0-react";
+import LoginForm from "../components/LoginForm";
+import LogoutForm from "../components/LogoutForm";
 
 const Home: NextPage = () => {
-  return (
-    <div>
-      <Head>
-        <title>NextJS and Tailwind Example</title>
-        <meta name="description" content="NextJS and Tailwind Example" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+  const { isAuthenticated } = useAuth0();
 
-      <main className="h-screen">
-        <div className="flex justify-center items-center h-full">
-          <h1 className="text-5xl font-bold">NextJS and Tailwind Example</h1>
-        </div>
-      </main>
-
-      <footer></footer>
-    </div>
-  );
+  return <div className="flex h-screen justify-center items-center">
+    {isAuthenticated ? <LogoutForm /> : <LoginForm />}
+  </div>
 };
 
 export default Home;
