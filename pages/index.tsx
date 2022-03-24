@@ -1,39 +1,44 @@
 import type { NextPage } from "next";
-import { useUser } from "@auth0/nextjs-auth0";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Home: NextPage = () => {
-  const { user } = useUser();
+  const { isAuthenticated, isLoading, user, logout } = useAuth0();
+  const { loginWithRedirect } = useAuth0();
 
-  if (user) {
+  if (isLoading) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center gap-2">
-        <div className="rounded-lg border p-4">
-          <table>
-            <tbody>
-              <tr>
-                <td className="p-2">ユーザー名</td>
-                <td className="p-2">{user.nickname}</td>
-              </tr>
-              <tr>
-                <td className="p-2">メールアドレス</td>
-                <td className="p-2">{user.email}</td>
-              </tr>
-            </tbody>
-          </table>
+      <div className="flex h-screen items-center justify-center">
+        <div className="rounded-full text-xl">Loading...</div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="mb-2 flex flex-col items-center">
+          <p className="px-2 py-1">{user?.nickname}</p>
+          <button
+            className="rounded-full border px-2 py-1 font-medium"
+            onClick={() => logout()}
+          >
+            ログアウト
+          </button>
         </div>
-        <button className="rounded-full border bg-gray-50 px-4 py-2 font-medium">
-          <a href="/api/auth/logout">ログアウト</a>
+      </div>
+    );
+  } else {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <button
+          className="rounded-full border px-2 py-1 font-medium"
+          onClick={() => loginWithRedirect()}
+        >
+          ログイン
         </button>
       </div>
     );
   }
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <button className="rounded-full border bg-blue-400 px-4 py-2 font-medium text-white">
-        <a href="/api/auth/login">ログイン</a>
-      </button>
-    </div>
-  );
 };
 
 export default Home;
